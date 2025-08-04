@@ -1,0 +1,356 @@
+// === SCSS Variables & Mixins ===
+@use 'sass:color';
+@use 'sass:map';
+
+// Color Palette
+$primary-color: #667eea;
+$primary-light: rgba(102, 126, 234, 0.1);
+$primary-border: rgba(102, 126, 234, 0.2);
+$primary-dark: #4d63d2; // Pre-calculated: color.adjust(#667eea, $lightness: -10%)
+$primary-darker: #3b4ea8; // Pre-calculated: color.adjust(#667eea, $lightness: -20%)
+
+$secondary-color: #4a5568;
+$secondary-light: #74889e; // Pre-calculated: color.adjust(#4a5568, $lightness: 20%)
+$text: #4a5568;
+$text-light: #a0aec0;
+$text-dark: #2d3748;
+$text-muted: #718096;
+
+// Background Colors
+$bg-white: #ffffff;
+$bg-light: #f7fafc;
+$bg-lighter: #edf2f7;
+$bg-gray: #e2e8f0;
+$border: #cbd5e0;
+$border-light: #e2e8f0;
+
+// Status Colors
+$success-color: #48bb78;
+$success-light: #c6f6d5;
+$error-color: #e53e3e;
+$error-light: #fed7d7;
+$error-dark: #c53030; // Pre-calculated: color.adjust(#e53e3e, $lightness: -10%)
+$warning-color: #ed8936;
+$warning-light: #fbd38d;
+
+// Note Colors
+$note-colors: (
+  white: #ffffff,
+  yellow: #fef3c7,
+  green: #d1fae5,
+  blue: #dbeafe,
+  purple: #e9d5ff,
+  pink: #fce7f3,
+  orange: #fed7aa,
+  red: #fee2e2
+);
+
+// Shadows
+$shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.1);
+$shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.15);
+$shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.2);
+
+// Border Radius
+$border-radius-xs: 2px;
+$border-radius-sm: 4px;
+$border-radius: 6px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-full: 50%;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing: 12px;
+$spacing-md: 16px;
+$spacing-lg: 20px;
+$spacing-xl: 24px;
+$spacing-2xl: 32px;
+$spacing-3xl: 40px;
+$spacing-4xl: 48px;
+
+// Typography
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 20px;
+$font-size-2xl: 24px;
+$font-size-3xl: 30px;
+$font-size-4xl: 36px;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$line-height-tight: 1.2;
+$line-height: 1.4;
+$line-height-relaxed: 1.6;
+
+// Transitions
+$transition-fast: all 0.15s ease;
+$transition: all 0.2s ease;
+$transition-slow: all 0.3s ease;
+$transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+// Z-index
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// === MIXINS ===
+
+// Button Mixins
+@mixin button-base {
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: $transition;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  outline: none;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background: $primary-color;
+  color: white;
+  padding: $spacing $spacing-lg;
+  
+  &:hover:not(:disabled) {
+    background: $primary-dark;
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background: $bg-light;
+  color: $secondary-color;
+  border: 1px solid $border-light;
+  padding: $spacing $spacing-lg;
+  
+  &:hover:not(:disabled) {
+    background: $bg-gray;
+    border-color: $text-light;
+  }
+}
+
+@mixin button-icon {
+  @include button-base;
+  padding: $spacing-sm;
+  background: none;
+  color: $text-light;
+  border-radius: $border-radius;
+  
+  &:hover:not(:disabled) {
+    background: $bg-light;
+    color: $secondary-color;
+  }
+}
+
+// Card Mixins
+@mixin card-base {
+  background: $bg-white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-xl;
+  box-shadow: $shadow-md;
+  border: 2px solid transparent;
+  transition: $transition-slow;
+}
+
+@mixin card-hover {
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+@mixin card-interactive {
+  @include card-base;
+  cursor: pointer;
+  
+  @include card-hover;
+}
+
+// Form Mixins
+@mixin input-base {
+  width: 100%;
+  padding: $spacing-md $spacing-lg;
+  background: $bg-white;
+  border: 2px solid $border-light;
+  border-radius: $border-radius-lg;
+  font-size: $font-size;
+  transition: $transition;
+  outline: none;
+  
+  &::placeholder {
+    color: $text-light;
+  }
+  
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px $primary-light;
+  }
+  
+  &:disabled {
+    background: $bg-lighter;
+    color: $text-light;
+    cursor: not-allowed;
+  }
+}
+
+// Layout Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// Animation Mixins
+@mixin fade-in($duration: 0.3s) {
+  opacity: 0;
+  animation: fadeIn $duration ease forwards;
+}
+
+@mixin slide-up($duration: 0.3s) {
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideUp $duration ease forwards;
+}
+
+@mixin bounce-in($duration: 0.5s) {
+  transform: scale(0.8);
+  opacity: 0;
+  animation: bounceIn $duration $transition-bounce forwards;
+}
+
+// Text Mixins
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-truncate-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Responsive Mixins
+@mixin mobile-only {
+  @media (max-width: #{$breakpoint-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin tablet-down {
+  @media (max-width: #{$breakpoint-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+// === KEYFRAMES ===
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bounceIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// === UTILITY FUNCTIONS ===
+@function color($color-name) {
+  @return map.get($note-colors, $color-name);
+}
+
+@function note-color($color-name) {
+  @return map.get($note-colors, $color-name);
+}
+
+@function note-color-names() {
+  @return map.keys($note-colors);
+}
+
+@function spacing($multiplier) {
+  @return $spacing * $multiplier;
+}

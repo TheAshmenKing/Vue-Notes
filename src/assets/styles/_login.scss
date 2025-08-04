@@ -1,0 +1,241 @@
+@use 'variables' as *;
+
+.login-page {
+  min-height: 100vh;
+  @include flex-center;
+  background: linear-gradient(135deg, $primary-color 0%, $primary-darker 100%);
+  padding: $spacing-lg;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-card {
+  @include card-base;
+  @include fade-in;
+  box-shadow: $shadow-xl;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: $spacing-2xl;
+
+  .logo {
+    @include flex-center;
+    gap: $spacing;
+    margin-bottom: $spacing-xl;
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      color: $primary-color;
+    }
+
+    h1 {
+      font-size: $font-size-3xl;
+      font-weight: $font-weight-bold;
+      color: $text-dark;
+      margin: 0;
+    }
+  }
+
+  h2 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-semibold;
+    color: $text-dark;
+    margin: 0 0 $spacing-sm 0;
+  }
+
+  p {
+    color: $text-light;
+    font-size: $font-size-sm;
+    margin: 0;
+  }
+}
+
+.login-form {
+  .form-group {
+    margin-bottom: $spacing-lg;
+
+    .form-label {
+      display: block;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: $text-dark;
+      margin-bottom: $spacing-sm;
+    }
+
+    .form-input {
+      @include input-base;
+    }
+
+    .password-input {
+      position: relative;
+
+      .form-input {
+        padding-right: 45px;
+      }
+
+      .password-toggle {
+        @include button-icon;
+        position: absolute;
+        right: $spacing;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $text-light;
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  .error-message {
+    @include flex-center;
+    gap: $spacing-sm;
+    background: $error-light;
+    color: $error-color;
+    padding: $spacing $spacing-md;
+    border-radius: $border-radius;
+    font-size: $font-size-sm;
+    margin-bottom: $spacing-lg;
+
+    .error-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+  }
+
+  .login-btn {
+    @include button-primary;
+    width: 100%;
+    margin-bottom: $spacing-lg;
+    padding: $spacing-md $spacing-lg;
+    font-size: $font-size;
+
+    .spinner {
+      border: 2px solid transparent;
+      border-top: 2px solid currentColor;
+      border-radius: $border-radius-full;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  .divider {
+    position: relative;
+    text-align: center;
+    margin: $spacing-lg 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: $border-light;
+    }
+
+    span {
+      background: $bg-white;
+      color: $text-light;
+      font-size: $font-size-sm;
+      padding: 0 $spacing-md;
+      position: relative;
+    }
+  }
+
+  .google-btn {
+    @include button-secondary;
+    width: 100%;
+    gap: $spacing-sm;
+    padding: $spacing-md $spacing-lg;
+    font-size: $font-size;
+    border: 2px solid $border-light;
+
+    &:hover:not(:disabled) {
+      background: $bg-lighter;
+      border-color: $text-light;
+    }
+
+    .google-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: $spacing-xl;
+  padding-top: $spacing-lg;
+  border-top: 1px solid $border-light;
+
+  p {
+    font-size: $font-size-sm;
+    color: $text-light;
+    margin: 0;
+  }
+
+  .auth-link {
+    color: $primary-color;
+    text-decoration: none;
+    font-weight: $font-weight-medium;
+    transition: $transition;
+
+    &:hover {
+      color: $primary-dark;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Button styles for consistency
+.btn {
+  @include button-base;
+  gap: $spacing-sm;
+
+  &.btn-primary {
+    @include button-primary;
+  }
+
+  &.btn-secondary {
+    @include button-secondary;
+  }
+
+  &-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// Responsive design
+@include mobile-only {
+  .login-page {
+    padding: $spacing;
+  }
+
+  .login-card {
+    padding: $spacing-lg;
+  }
+
+  .login-header {
+    .logo {
+      h1 {
+        font-size: $font-size-2xl;
+      }
+    }
+
+    h2 {
+      font-size: $font-size-xl;
+    }
+  }
+}

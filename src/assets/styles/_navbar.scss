@@ -1,0 +1,217 @@
+@use 'variables' as *;
+
+.navbar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 250px;
+  background: $bg-white;
+  box-shadow: $shadow-lg;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.nav-header {
+  padding: $spacing-xl $spacing-lg;
+  border-bottom: 1px solid $border-light;
+
+  .nav-logo {
+    @include flex-center;
+    justify-content: flex-start;
+    gap: $spacing;
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      color: $primary-color;
+    }
+
+    h2 {
+      color: $text-dark;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      margin: 0;
+    }
+  }
+}
+
+.nav-menu {
+  flex: 1;
+  padding: $spacing-lg 0;
+  overflow-y: auto;
+
+  .nav-link {
+    @include flex-center;
+    justify-content: flex-start;
+    gap: $spacing;
+    padding: $spacing $spacing-lg;
+    color: $text;
+    text-decoration: none;
+    transition: $transition;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: $font-size-sm;
+
+    &:hover {
+      background: $bg-light;
+      color: $primary-color;
+    }
+
+    &.active {
+      background: linear-gradient(135deg, $primary-color 0%, $primary-darker 100%);
+      color: white;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+  }
+
+  .nav-button {
+    margin: 0 $spacing-lg $spacing-lg $spacing-lg;
+    border-radius: $border-radius;
+    background: linear-gradient(135deg, $primary-color 0%, $primary-darker 100%);
+    color: white;
+    width: calc(100% - #{$spacing-lg * 2});
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba($primary-color, 0.3);
+    }
+  }
+
+  .nav-search {
+    margin: $spacing-lg;
+    position: relative;
+
+    .search-icon {
+      position: absolute;
+      left: $spacing;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: $text-light;
+    }
+
+    .search-input {
+      @include input-base;
+      padding-left: calc(#{$spacing} + 20px);
+      font-size: $font-size-sm;
+    }
+  }
+
+  .nav-tags {
+    margin: $spacing-lg;
+
+    .nav-section-title {
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      color: $text-light;
+      text-transform: uppercase;
+      margin-bottom: $spacing;
+      letter-spacing: 0.5px;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs;
+
+      .tag-button {
+        padding: $spacing-xs $spacing;
+        border: none;
+        background: none;
+        color: $text;
+        text-align: left;
+        cursor: pointer;
+        border-radius: $border-radius-sm;
+        font-size: $font-size-xs;
+        transition: $transition;
+
+        &:hover {
+          background: $bg-light;
+          color: $primary-color;
+        }
+
+        &.active {
+          background: $primary-color;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.nav-footer {
+  padding: $spacing-lg;
+  border-top: 1px solid $border-light;
+
+  .user-info {
+    @include flex-center;
+    justify-content: flex-start;
+    gap: $spacing-sm;
+    margin-bottom: $spacing;
+    padding: $spacing-sm 0;
+
+    .user-icon {
+      width: 16px;
+      height: 16px;
+      color: $text-light;
+      flex-shrink: 0;
+    }
+
+    .user-email {
+      font-size: $font-size-xs;
+      color: $text;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .logout-btn {
+    @include flex-center;
+    justify-content: flex-start;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing;
+    border: 1px solid $border-light;
+    background: $bg-white;
+    color: $text;
+    border-radius: $border-radius-sm;
+    cursor: pointer;
+    transition: $transition;
+    font-size: $font-size-xs;
+    width: 100%;
+
+    &:hover {
+      background: $bg-light;
+      border-color: $border;
+    }
+
+    .logout-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// Responsive design
+@include tablet-down {
+  .navbar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+}

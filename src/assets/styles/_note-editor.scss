@@ -1,0 +1,387 @@
+@use 'variables' as *;
+
+.note-editor {
+  min-height: 100vh;
+  padding: $spacing-xl;
+  background: linear-gradient(135deg, $primary-color 0%, $primary-darker 100%);
+}
+
+.editor-header {
+  @include flex-between;
+  flex-wrap: wrap;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-xl;
+  padding: $spacing-lg $spacing-xl;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  .nav-actions {
+    @include flex-center;
+    gap: $spacing;
+  }
+
+  .auto-save-status {
+    @include flex-center;
+    gap: $spacing-sm;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: $font-size-sm;
+
+    .saving {
+      @include flex-center;
+      gap: $spacing-sm;
+      color: $warning-color;
+
+      .spinner-sm {
+        width: 12px;
+        height: 12px;
+        border: 2px solid rgba($warning-color, 0.3);
+        border-top: 2px solid $warning-color;
+        border-radius: $border-radius-full;
+        animation: spin 1s linear infinite;
+      }
+    }
+
+    .saved {
+      @include flex-center;
+      gap: $spacing-sm;
+      color: $success-color;
+
+      .check-icon {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  .editor-tools {
+    @include flex-center;
+    gap: $spacing-lg;
+  }
+
+  .color-picker {
+    @include flex-center;
+    gap: $spacing;
+
+    label {
+      color: white;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+    }
+
+    .color-options {
+      @include flex-center;
+      gap: $spacing-sm;
+    }
+
+    .color-option {
+      width: 24px;
+      height: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: $border-radius-full;
+      cursor: pointer;
+      transition: $transition;
+
+      &:hover {
+        transform: scale(1.1);
+        border-color: rgba(255, 255, 255, 0.6);
+      }
+
+      &.active {
+        border-color: white;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+}
+
+.loading-state,
+.error-state {
+  @include flex-center;
+  @include flex-column;
+  min-height: 60vh;
+  color: white;
+  text-align: center;
+  padding: $spacing-xl;
+
+  .spinner {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: $border-radius-full;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: $spacing-lg;
+  }
+
+  .error-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: $spacing-lg;
+    opacity: 0.8;
+  }
+
+  h3 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-semibold;
+    margin-bottom: $spacing;
+  }
+
+  p {
+    font-size: $font-size-lg;
+    opacity: 0.8;
+    margin-bottom: $spacing-xl;
+    max-width: 500px;
+    line-height: $line-height-relaxed;
+  }
+}
+
+.editor-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing-xl;
+  min-height: calc(100vh - 200px);
+  background: white;
+  margin-top: $spacing-xl;
+  margin-bottom: $spacing-xl;
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-xl;
+  transition: background-color 0.3s ease;
+
+  .title-input {
+    width: 100%;
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: $text-dark;
+    margin-bottom: $spacing-xl;
+    padding: $spacing-md 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-bottom-color: $primary-color;
+    }
+
+    &::placeholder {
+      color: $text-light;
+    }
+  }
+
+  .content-textarea {
+    width: 100%;
+    min-height: 400px;
+    font-size: $font-size-lg;
+    line-height: $line-height-relaxed;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: $text-dark;
+    resize: vertical;
+    font-family: inherit;
+
+    &::placeholder {
+      color: $text-light;
+    }
+  }
+
+  .editor-footer {
+    margin-top: $spacing-2xl;
+    padding-top: $spacing-xl;
+    border-top: 1px solid $border-light;
+
+    .tags-section {
+      margin-bottom: $spacing-xl;
+
+      label {
+        display: block;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-semibold;
+        color: $text-dark;
+        margin-bottom: $spacing;
+      }
+
+      .tags-input-container {
+        @include flex-center;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+        padding: $spacing $spacing-md;
+        border: 2px solid $border-light;
+        border-radius: $border-radius;
+        background: $bg-lighter;
+        transition: border-color 0.2s ease;
+
+        &:focus-within {
+          border-color: $primary-color;
+        }
+      }
+
+      .tags-display {
+        @include flex-center;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+      }
+
+      .tag {
+        @include flex-center;
+        gap: $spacing-xs;
+        background: $primary-color;
+        color: white;
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $border-radius-sm;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-medium;
+
+        .remove-tag {
+          @include button-icon;
+          background: rgba(255, 255, 255, 0.2);
+          color: white;
+          padding: 2px;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.3);
+          }
+
+          svg {
+            width: 12px;
+            height: 12px;
+          }
+        }
+      }
+
+      .tag-input {
+        flex: 1;
+        min-width: 120px;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: $font-size-sm;
+        padding: $spacing-xs 0;
+
+        &::placeholder {
+          color: $text-light;
+        }
+      }
+    }
+
+    .note-meta {
+      @include flex-between;
+      flex-wrap: wrap;
+      gap: $spacing;
+      color: $text-light;
+      font-size: $font-size-sm;
+
+      .note-dates {
+        @include flex-column;
+        gap: $spacing-xs;
+
+        div {
+          @include flex-center;
+          gap: $spacing-xs;
+        }
+
+        .meta-icon {
+          width: 14px;
+          height: 14px;
+        }
+      }
+
+      .word-count {
+        font-weight: $font-weight-medium;
+      }
+    }
+  }
+}
+
+// Button styles
+.btn {
+  @include button-base;
+  gap: $spacing-sm;
+
+  &.btn-primary {
+    @include button-primary;
+  }
+
+  &.btn-secondary {
+    @include button-secondary;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  &.btn-danger {
+    background: $error-color;
+    color: white;
+    border: none;
+
+    &:hover:not(:disabled) {
+      background: $error-dark;
+    }
+  }
+
+  &-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// Responsive design
+@include tablet-down {
+  .editor-header {
+    @include flex-column;
+    gap: $spacing;
+    text-align: center;
+
+    .editor-tools {
+      justify-content: center;
+    }
+
+    .color-picker {
+      .color-options {
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  .editor-content {
+    margin: $spacing;
+    padding: $spacing-lg;
+
+    .title-input {
+      font-size: $font-size-3xl;
+    }
+
+    .content-textarea {
+      font-size: $font-size;
+      min-height: 300px;
+    }
+
+    .editor-footer {
+      .note-meta {
+        @include flex-column;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@include mobile-only {
+  .editor-content {
+    .title-input {
+      font-size: $font-size-2xl;
+    }
+
+    .tags-section {
+      .tags-input-container {
+        padding: $spacing-sm;
+      }
+    }
+  }
+}
