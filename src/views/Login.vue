@@ -127,8 +127,10 @@ const handleLogin = async () => {
 const handleGoogleLogin = async () => {
   try {
     await loginWithGoogle()
+    // Note: If redirect is used, the page will reload and we won't reach this line
     router.push('/dashboard')
   } catch (err) {
+    // Error handling is already done in the composable
     console.error('Google login failed:', err)
   }
 }

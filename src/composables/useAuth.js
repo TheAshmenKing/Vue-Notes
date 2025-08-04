@@ -5,7 +5,9 @@ import {
   signOut, 
   onAuthStateChanged,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult
 } from 'firebase/auth'
 import { auth } from '../firebase/config.js'
 
@@ -34,6 +36,10 @@ const getFriendlyErrorMessage = (errorCode) => {
       return 'Too many attempts. Please try again later.'
     case 'auth/popup-closed-by-user':
       return 'Sign-in was cancelled.'
+    case 'auth/cancelled-popup-request':
+      return 'Sign-in was cancelled.'
+    case 'auth/popup-blocked':
+      return 'Popup was blocked. Please allow popups or try again.'
     default:
       return 'Something went wrong. Please try again.'
   }
@@ -43,6 +49,19 @@ const getFriendlyErrorMessage = (errorCode) => {
 onAuthStateChanged(auth, (firebaseUser) => {
   user.value = firebaseUser
   loading.value = false
+})
+
+// Check for redirect result on app load
+getRedirectResult(auth).then((result) => {
+  if (result?.user) {
+    // User successfully signed in via redirect
+    console.log('Google sign-in successful via redirect')
+  }
+}).catch((error) => {
+  if (error.code !== 'auth/null-user') {
+    console.error('Redirect result error:', error)
+    error.value = getFriendlyErrorMessage(error.code)
+  }
 })
 
 export function useAuth() {
@@ -82,7 +101,27 @@ export function useAuth() {
       error.value = null
       loading.value = true
       const provider = new GoogleAuthProvider()
-      await signInWithPopup(auth, provider)
+      
+      // Add additional scopes
+      provider.addScope('email')
+      provider.addScope('profile')
+      
+      try {
+        // Try popup first (works better for desktop)
+        await signInWithPopup(auth, provider)
+      } catch (popupError) {
+        // If popup fails (mobile or COOP issues), fall back to redirect
+        if (popupError.code === 'auth/popup-blocked' || 
+            popupError.code === 'auth/popup-closed-by-user' ||
+            popupError.message.includes('Cross-Origin-Opener-Policy')) {
+          
+          console.log('Popup blocked, falling back to redirect')
+          await signInWithRedirect(auth, provider)
+          // Note: redirect will reload the page, so we don't reach the finally block
+          return
+        }
+        throw popupError // Re-throw if it's a different error
+      }
     } catch (err) {
       const friendlyMessage = getFriendlyErrorMessage(err.code)
       error.value = friendlyMessage
