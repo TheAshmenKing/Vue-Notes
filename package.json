@@ -4,6 +4,12 @@
   "description": "A beautiful note-taking app built with Vue.js and Firebase - because your thoughts deserve a good home",
   "type": "module",
   "author": "Your Name",
+  "homepage": "https://vue-notes-app.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/vue-note.git"
+  },
+  "keywords": ["vue", "firebase", "notes", "productivity", "vite"],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
