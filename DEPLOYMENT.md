@@ -38,11 +38,11 @@
 1. **Sign up at [vercel.com](https://vercel.com)** with your GitHub account
 2. **Click "New Project"** in your Vercel dashboard
 3. **Import your GitHub repository**
-4. **Configure build settings:**
-   - Framework Preset: **Vite**
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-   - Install Command: `npm ci`
+4. **Vercel auto-detects everything:**
+   - Framework Preset: **Vite** ✅ (auto-detected)
+   - Build Command: `npm run build` ✅ (auto-detected)
+   - Output Directory: `dist` ✅ (auto-detected)
+   - Install Command: `npm ci` ✅ (auto-detected)
 5. **Add Environment Variables** (see below)
 6. **Deploy!** - Takes ~2 minutes
 
@@ -57,10 +57,16 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
 VITE_FIREBASE_APP_ID=1:123456789:web:abcdefghijk
 ```
 
+**Vercel Features Included:**
+- ✅ SPA routing with rewrites
+- ✅ Security headers (X-Frame-Options, XSS Protection)
+- ✅ Asset caching (1 year for static files)
+- ✅ Auto-deploy on git push
+- ✅ Preview deployments for PRs
+
 **Vercel Checklist:**
 - [ ] Repository connected
-- [ ] Build command: `npm run build`
-- [ ] Output directory: `dist`
+- [ ] Auto-detected build settings verified
 - [ ] Environment variables added
 - [ ] Domain configured (optional)
 - [ ] First deployment successful
