@@ -146,6 +146,10 @@
   display: flex;
   gap: $spacing-xs;
 
+  @media (max-width: 768px) {
+    display: none;
+  }
+
   .toggle-btn {
     @include button-icon;
     padding: $spacing-sm;

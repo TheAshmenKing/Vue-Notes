@@ -17,9 +17,13 @@
             Saved {{ formatLastSaved(lastSaved) }}
           </div>
         </div>
+        <button @click="deleteCurrentNote" class="btn btn-danger" v-if="note">
+          <Trash2 class="btn-icon" />
+          Delete
+        </button>
       </div>
 
-      <div class="editor-tools">
+      <!-- <div class="editor-tools">
         <div class="color-picker">
           <label>Color:</label>
           <div class="color-options">
@@ -39,7 +43,7 @@
           <Trash2 class="btn-icon" />
           Delete
         </button>
-      </div>
+      </div> -->
     </div>
 
     <div v-if="loading" class="loading-state">
@@ -102,7 +106,20 @@
             />
           </div>
         </div>
-
+        <div class="color-picker">
+          <label>Color:</label>
+          <div class="color-options">
+            <button
+              v-for="color in colorOptions"
+              :key="color.value"
+              @click="updateColor(color.value)"
+              class="color-option"
+              :class="{ active: note?.color === color.value }"
+              :style="{ backgroundColor: color.value }"
+              :title="color.name"
+            ></button>
+          </div>
+        </div>
         <div class="note-meta">
           <div class="note-dates">
             <div v-if="note.createdAt">

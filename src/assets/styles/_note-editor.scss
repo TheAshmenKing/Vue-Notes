@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 .note-editor {
   min-height: 100vh;
@@ -290,6 +290,47 @@
 
       .word-count {
         font-weight: $font-weight-medium;
+      }
+    }
+
+    .color-picker {
+      margin-bottom: $spacing-xl;
+      // @include flex-center;
+      // gap: $spacing;
+
+      label {
+        // color: $text-dark;
+        // font-size: $font-size-sm;
+        // font-weight: $font-weight-medium;
+        display: block;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-semibold;
+        color: $text-dark;
+        margin-bottom: $spacing;
+      }
+
+      .color-options {
+        @include flex-center;
+        gap: $spacing-sm;
+      }
+
+      .color-option {
+        width: 24px;
+        height: 24px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: $border-radius-full;
+        cursor: pointer;
+        transition: $transition;
+
+        &:hover {
+          transform: scale(1.1);
+          border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        &.active {
+          border-color: white;
+          box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+        }
       }
     }
   }
