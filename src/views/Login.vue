@@ -130,8 +130,13 @@ const handleGoogleLogin = async () => {
     // Note: If redirect is used, the page will reload and we won't reach this line
     router.push('/dashboard')
   } catch (err) {
-    // Error handling is already done in the composable
+    // Show more detailed error information
     console.error('Google login failed:', err)
+    console.error('Error details:', {
+      message: err.message,
+      code: err.code,
+      stack: err.stack
+    })
   }
 }
 </script>

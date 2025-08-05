@@ -40,8 +40,14 @@ const getFriendlyErrorMessage = (errorCode) => {
       return 'Sign-in was cancelled.'
     case 'auth/popup-blocked':
       return 'Popup was blocked. Please allow popups or try again.'
+    case 'auth/operation-not-allowed':
+      return 'Google Sign-in is not enabled. Please contact support.'
+    case 'auth/invalid-api-key':
+      return 'Configuration error. Please contact support.'
+    case 'auth/app-not-authorized':
+      return 'App not authorized for this domain. Please contact support.'
     default:
-      return 'Something went wrong. Please try again.'
+      return `Authentication error (${errorCode}). Please contact support.`
   }
 }
 
@@ -113,9 +119,8 @@ export function useAuth() {
         // If popup fails (mobile or COOP issues), fall back to redirect
         if (popupError.code === 'auth/popup-blocked' || 
             popupError.code === 'auth/popup-closed-by-user' ||
+            popupError.code === 'auth/cancelled-popup-request' ||
             popupError.message.includes('Cross-Origin-Opener-Policy')) {
-          
-          console.log('Popup blocked, falling back to redirect')
           await signInWithRedirect(auth, provider)
           // Note: redirect will reload the page, so we don't reach the finally block
           return

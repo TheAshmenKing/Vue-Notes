@@ -1,30 +1,80 @@
 <template>
   <div class="dashboard">
-    <div class="dashboard-header">
-      <h1>Your Notes</h1>
-      <button @click="handleLogout" class="btn btn-secondary">
-          <LogOut class="btn-icon" />
-          Logout
+    <!-- Mobile Header (visible only on mobile) -->
+    <div class="mobile-header">
+      <div class="logo">Your Notes</div>
+      <div class="mobile-menu-container">
+        <button 
+          @click="toggleMobileMenu" 
+          class="hamburger-button"
+          :class="{ active: showMobileMenu }"
+        >
+          <Menu />
         </button>
+        
+        <!-- Mobile Dropdown Menu -->
+        <div 
+          class="mobile-dropdown-menu" 
+          :class="{ show: showMobileMenu }"
+          @click.stop
+        >
+          <div class="dropdown-content">
+            <router-link to="/dashboard" class="dropdown-item" @click="closeMobileMenu">
+              <Home />
+              <span>Dashboard</span>
+            </router-link>
+            
+            <div class="dropdown-divider"></div>
+            
+            <button @click="handleMobileLogout" class="dropdown-item logout-item">
+              <LogOut />
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Click overlay to close dropdown -->
+    <div 
+      v-if="showMobileMenu"
+      class="mobile-dropdown-overlay"
+      @click="closeMobileMenu"
+    ></div>
+
+    <!-- Desktop Header (visible only on desktop) -->
+    <div class="dashboard-header desktop-only">
+      <h1>Your Notes</h1>
+      <button @click="handleLogout" class="btn btn-secondary desktop-logout">
+        <LogOut class="btn-icon" />
+        Logout
+      </button>
     </div>
     <!-- Search Bar -->
     <div class="search-section">
-      <div class="search-container">
-        <Search class="search-icon" />
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Search through your brilliant ideas..."
-          class="search-input"
-          @input="onSearchInput"
-        />
-        <button 
-          v-if="searchQuery" 
-          @click="clearSearch"
-          class="clear-search-btn"
-          title="Clear search"
-        >
-          <X />
+      <div class="search-and-button-container">
+        <div class="search-container">
+          <Search class="search-icon" />
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search through your brilliant ideas..."
+            class="search-input"
+            @input="onSearchInput"
+          />
+          <button 
+            v-if="searchQuery" 
+            @click="clearSearch"
+            class="clear-search-btn"
+            title="Clear search"
+          >
+            <X />
+          </button>
+        </div>
+        
+        <button @click="createNewNote" class="btn btn-primary new-note-btn">
+          <Plus class="btn-icon" />
+          New Note
         </button>
       </div>
       
@@ -35,11 +85,8 @@
       </div>
     </div>
 
-    <div class="dashboard-header">
-        <button @click="createNewNote" class="btn btn-primary">
-          <Plus class="btn-icon" />
-          New Note
-        </button>        
+    <!-- Controls Section -->
+    <div class="controls-section">      
         <div class="color-filter">
           <button 
             v-for="color in colorOptions" 
@@ -76,10 +123,6 @@
             <List />
           </button>
         </div>
-        <!-- <button @click="handleLogout" class="btn btn-secondary">
-          <LogOut class="btn-icon" />
-          Logout
-        </button> -->
     </div>
 
     <div v-if="filteredNotes.length === 0 && !loading" class="empty-state">
@@ -170,7 +213,9 @@ import {
   Clock,
   Search,
   X,
-  LogOut
+  LogOut,
+  Home,
+  Menu
 } from 'lucide-vue-next'
 
 const router = useRouter()
@@ -182,6 +227,7 @@ const viewMode = ref('grid')
 const searchQuery = ref('')
 const selectedTag = ref('')
 const selectedColor = ref('')
+const showMobileMenu = ref(false)
 
 const colorOptions = [
   { name: 'White', value: '#ffffff' },
@@ -343,6 +389,19 @@ const handleLogout = async () => {
   } catch (error) {
     console.error('Error logging out:', error)
   }
+}
+
+const toggleMobileMenu = () => {
+  showMobileMenu.value = !showMobileMenu.value
+}
+
+const closeMobileMenu = () => {
+  showMobileMenu.value = false
+}
+
+const handleMobileLogout = async () => {
+  closeMobileMenu()
+  await handleLogout()
 }
 
 const truncateContent = (content) => {
