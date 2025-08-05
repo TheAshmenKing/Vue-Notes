@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <NavBar v-if="isAuthenticated" />
-    <main class="main-content" :class="{ 'with-nav': isAuthenticated }">
+    <!-- <NavBar v-if="isAuthenticated" /> -->
+    <main class="main-content">
       <router-view />
     </main>
   </div>
@@ -49,20 +49,23 @@ body {
 
 .main-content {
   flex: 1;
-  padding: 20px;
+  padding: 0; /* Remove padding since we'll use mobile header */
 }
 
+/* Remove with-nav styles since we're not using the sidebar anymore */
+/*
 .main-content.with-nav {
-  /* margin-left: 250px; */
+  margin-left: 250px;
   padding: 20px 40px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 991px) {
   .main-content.with-nav {
     margin-left: 0;
     padding: 20px;
   }
 }
+*/
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {

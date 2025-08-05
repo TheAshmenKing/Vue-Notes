@@ -16,7 +16,6 @@
         <div 
           class="mobile-dropdown-menu" 
           :class="{ show: showMobileMenu }"
-          @click.stop
         >
           <div class="dropdown-content">
             <router-link to="/dashboard" class="dropdown-item" @click="closeMobileMenu">
@@ -26,7 +25,7 @@
             
             <div class="dropdown-divider"></div>
             
-            <button @click="handleMobileLogout" class="dropdown-item logout-item">
+            <button @click="handleMobileLogout" class="dropdown-item logout-item" tabindex="0">
               <LogOut />
               <span>Logout</span>
             </button>
@@ -35,12 +34,14 @@
       </div>
     </div>
 
-    <!-- Click overlay to close dropdown -->
+    <!-- Click overlay to close dropdown - DISABLED because it blocks button clicks -->
+    <!--
     <div 
       v-if="showMobileMenu"
       class="mobile-dropdown-overlay"
       @click="closeMobileMenu"
     ></div>
+    -->
 
     <!-- Desktop Header (visible only on desktop) -->
     <div class="dashboard-header desktop-only">
@@ -399,9 +400,17 @@ const closeMobileMenu = () => {
   showMobileMenu.value = false
 }
 
-const handleMobileLogout = async () => {
-  closeMobileMenu()
-  await handleLogout()
+const handleMobileLogout = async (event) => {
+  console.log('Mobile logout clicked', event)
+  try {
+    closeMobileMenu()
+    console.log('About to call handleLogout')
+    await handleLogout()
+    console.log('handleLogout completed successfully')
+  } catch (error) {
+    console.error('Mobile logout error:', error)
+    alert('Error logging out. Please try again.')
+  }
 }
 
 const truncateContent = (content) => {

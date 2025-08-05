@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth.js'
 import { useNotes } from '../composables/useNotes.js'
@@ -78,6 +78,16 @@ const { createNote, getAllTags } = useNotes()
 
 const searchTerm = ref('')
 const selectedTag = ref(null)
+
+// Get all available tags
+const allTags = computed(() => {
+  try {
+    return getAllTags() || []
+  } catch (error) {
+    console.error('Error getting tags:', error)
+    return []
+  }
+})
 
 const createNewNote = async () => {
   try {
@@ -106,11 +116,15 @@ const filterByTag = (tag) => {
 }
 
 const handleLogout = async () => {
+  console.log('NavBar logout clicked')
   try {
+    console.log('About to call logout from NavBar')
     await logout()
+    console.log('Logout successful, navigating to home')
     router.push('/')
   } catch (error) {
-    console.error('Error logging out:', error)
+    console.error('Error logging out from NavBar:', error)
+    alert('Error logging out: ' + error.message)
   }
 }
 </script>

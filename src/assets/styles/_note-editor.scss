@@ -2,13 +2,13 @@
 
 .note-editor {
   min-height: 100vh;
-  padding: $spacing-xl;
+  // padding: $spacing-xl;
   background: linear-gradient(135deg, $primary-color 0%, $primary-darker 100%);
 }
 
 .editor-header {
-  @include flex-between;
-  flex-wrap: wrap;
+  // @include flex-between;
+  // flex-wrap: wrap;
   gap: $spacing-lg;
   margin-bottom: $spacing-xl;
   padding: $spacing-lg $spacing-xl;
@@ -19,6 +19,7 @@
   .nav-actions {
     @include flex-center;
     gap: $spacing;
+    width: auto;
   }
 
   .auto-save-status {
@@ -379,6 +380,12 @@
     @include flex-column;
     gap: $spacing;
     text-align: center;
+
+    .nav-actions {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
 
     .editor-tools {
       justify-content: center;

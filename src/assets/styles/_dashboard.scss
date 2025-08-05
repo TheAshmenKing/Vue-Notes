@@ -2,16 +2,35 @@
 
 // Main Styles
 .dashboard {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%; // Ensure full width
+  margin: 0; // Remove auto centering
 }
 
 .search-section {
   margin-bottom: $spacing-2xl;
+  padding: 0 $spacing-xl;
 
   @media (max-width: 768px) {
-    margin-top: $spacing-2xl;
-    margin-bottom: $spacing-2xl;
+    margin-top: $spacing-xl;
+    margin-bottom: $spacing-xl;
+    padding: 0 $spacing-md;
+  }
+  
+  // Enhanced desktop styling with better spacing from header
+  @media (min-width: 992px) {
+    padding: 0 $spacing-2xl;
+    margin-top: $spacing-3xl; // Add top margin for spacing from header
+    margin-bottom: $spacing-3xl;
+  }
+  
+  @media (min-width: 1600px) {
+    padding: 0 $spacing-3xl;
+    margin-top: $spacing-4xl; // Even more spacing on larger screens
+  }
+  
+  @media (min-width: 2000px) {
+    padding: 0 4%;
+    margin-top: $spacing-5xl;
   }
 
   .search-and-button-container {
@@ -19,13 +38,19 @@
     gap: $spacing-lg;
     align-items: center;
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: none; // Remove max-width restriction
+    margin: 0;
 
     @media (max-width: 768px) {
       flex-direction: column;
       gap: $spacing-md;
       max-width: 100%;
+    }
+    
+    // Better desktop layout with full width
+    @media (min-width: 992px) {
+      gap: $spacing-xl;
+      max-width: none;
     }
   }
 
@@ -42,13 +67,28 @@
   .new-note-btn {
     white-space: nowrap;
     flex-shrink: 0;
-    height: 48px; // Match search input height
+    height: 48px;
     display: flex;
     align-items: center;
 
     @media (max-width: 768px) {
       width: 100%;
       justify-content: center;
+    }
+    
+    // Enhanced desktop styling for New Note button
+    @media (min-width: 992px) {
+      height: 52px;
+      padding: 0 $spacing-xl;
+      font-size: $font-size-sm;
+      font-weight: 600;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      }
     }
   }
 
@@ -67,6 +107,27 @@
     @include input-base;
     padding-left: 50px;
     box-shadow: $shadow-sm;
+    
+    // Enhanced desktop search styling
+    @media (min-width: 992px) {
+      height: 52px;
+      padding-left: 60px;
+      padding-right: $spacing-lg;
+      font-size: $font-size;
+      border-radius: 12px;
+      border: 2px solid $border-light;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+      }
+      
+      &::placeholder {
+        color: $text-light;
+        font-style: italic;
+      }
+    }
   }
 
   .clear-search-btn {
@@ -97,25 +158,9 @@
   }
 }
 
+// Desktop header is no longer used - we only use the mobile header now
 .dashboard-header {
-  @include flex-between;
-  margin-bottom: $spacing-3xl;
-
-  h1 {
-    color: white;
-    font-size: $font-size-4xl;
-    font-weight: $font-weight-bold;
-  }
-
-  // Hide completely on mobile - mobile header will be used instead
-  @media (max-width: 768px) {
-    display: none !important;
-  }
-
-  // Also hide on tablets to be safe
-  @media (max-width: 1024px) and (max-height: 768px) {
-    display: none !important;
-  }
+  display: none !important;
 }
 
 // Controls section styling
@@ -125,10 +170,62 @@
   margin-bottom: $spacing-xl;
   flex-wrap: wrap;
   gap: $spacing-lg;
+  padding: 0 $spacing-xl;
 
   @media (max-width: 768px) {
     gap: $spacing-md;
     justify-content: center;
+    padding: 0 $spacing-md;
+  }
+  
+  // Enhanced desktop styling with consistent padding
+  @media (min-width: 992px) {
+    padding: 0 $spacing-2xl;
+    margin-bottom: $spacing-3xl;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    gap: $spacing-2xl;
+  }
+  
+  @media (min-width: 1600px) {
+    padding: 0 $spacing-3xl;
+  }
+  
+  @media (min-width: 2000px) {
+    padding: 0 4%;
+  }
+  
+  .color-filter-button {
+    @media (min-width: 992px) {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+      
+      &.active {
+        transform: scale(1.1);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        
+        &::after {
+          content: '';
+          position: absolute;
+          top: -3px;
+          left: -3px;
+          right: -3px;
+          bottom: -3px;
+          border: 2px solid $primary-color;
+          border-radius: 15px;
+        }
+      }
+    }
   }
 }
 
@@ -149,6 +246,15 @@
   @media (max-width: 768px) {
     display: none;
   }
+  
+  // Enhanced desktop styling
+  @media (min-width: 992px) {
+    background: $bg-white;
+    border-radius: 12px;
+    padding: $spacing-sm;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid $border-light;
+  }
 
   .toggle-btn {
     @include button-icon;
@@ -159,10 +265,26 @@
     &:hover {
       background: $bg-light;
     }
+    
+    // Enhanced desktop styling
+    @media (min-width: 992px) {
+      padding: $spacing-md;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: $bg-light;
+        transform: translateY(-1px);
+      }
+    }
 
     &.active {
       background: $primary-color;
       color: white;
+      
+      @media (min-width: 992px) {
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      }
     }
   }
 }
@@ -259,9 +381,44 @@
 .notes-container {
   display: grid;
   gap: $spacing-xl;
+  padding: 0 $spacing-xl;
+  max-width: none; // Remove max-width restriction
+  margin: 0;
+
+  @media (max-width: 768px) {
+    padding: 0 $spacing-md;
+  }
+  
+  // Enhanced desktop styling with consistent padding
+  @media (min-width: 992px) {
+    padding: 0 $spacing-2xl;
+    gap: $spacing-2xl;
+  }
+  
+  @media (min-width: 1600px) {
+    padding: 0 $spacing-3xl;
+  }
+  
+  @media (min-width: 2000px) {
+    padding: 0 4%;
+  }
 
   &.grid-view {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    
+    // Better desktop grid with responsive columns
+    @media (min-width: 992px) {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: $spacing-2xl;
+    }
+    
+    @media (min-width: 1200px) {
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+    
+    @media (min-width: 1600px) {
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    }
   }
 
   &.list-view {
@@ -436,6 +593,8 @@
 @include mobile-only {
   .search-section {
     margin-bottom: $spacing-xl;
+    padding-left: $spacing;
+    padding-right: $spacing;
 
     .search-container {
       max-width: 100%;
@@ -470,6 +629,8 @@
   }
 
   .notes-container {
+    padding: $spacing-lg;
+
     &.grid-view {
       grid-template-columns: 1fr;
     }
@@ -486,41 +647,80 @@
   }
 }
 
-// Mobile Header & Hamburger Menu
+// Header design that works well on both mobile and desktop
 .mobile-header {
-  display: none;
-  padding: $spacing-md;
-  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-lg $spacing-xl;
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid $border;
   position: sticky;
   top: 0;
   z-index: 50;
-
-  @media (max-width: 768px) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%; // Ensure full width
+  box-sizing: border-box; // Include padding in width calculation
+  
+  // Enhanced desktop styling with minimal side padding
+  @media (min-width: 992px) {
+    padding: $spacing-xl $spacing-2xl;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  // For very large screens, still keep padding reasonable
+  @media (min-width: 1600px) {
+    padding: $spacing-xl $spacing-3xl;
+  }
+  
+  @media (min-width: 2000px) {
+    padding: $spacing-xl 4%;
   }
 
   .logo {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: $primary-color;
+    flex: 1; // Allow logo to take up space
+    
+    @media (min-width: 768px) {
+      font-size: 1.75rem;
+    }
+    
+    @media (min-width: 992px) {
+      font-size: 2rem;
+      background: linear-gradient(135deg, $primary-color 0%, $primary-darker 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      flex: none; // Reset flex on desktop for better control
+    }
   }
 
   .mobile-menu-container {
     position: relative;
+    flex-shrink: 0; // Prevent shrinking
+    
+    @media (min-width: 992px) {
+      display: flex;
+      align-items: center;
+      gap: $spacing-lg;
+    }
   }
 
   .hamburger-button {
     background: none;
     border: none;
-    padding: $spacing-xs;
+    padding: $spacing-sm;
     cursor: pointer;
     color: $text;
     border-radius: 8px;
     transition: all 0.2s ease;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
       background: rgba(0, 0, 0, 0.05);
@@ -533,6 +733,28 @@
     &.active {
       background: rgba(102, 126, 234, 0.1);
       color: $primary-color;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    // Enhanced desktop styling for hamburger button
+    @media (min-width: 992px) {
+      background: rgba(102, 126, 234, 0.1);
+      border: 1px solid rgba(102, 126, 234, 0.2);
+      border-radius: 12px;
+      padding: $spacing-md;
+      min-width: 50px;
+      min-height: 50px;
+      
+      &:hover {
+        background: rgba(102, 126, 234, 0.15);
+        border-color: rgba(102, 126, 234, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+      }
     }
   }
 }
@@ -552,12 +774,14 @@
   opacity: 0;
   visibility: hidden;
   transition: all 0.2s ease;
-  z-index: 60;
+  z-index: 9999;
+  pointer-events: none;
 
   &.show {
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
+    pointer-events: auto; // Enable clicking when shown
   }
 
   .dropdown-content {
@@ -577,6 +801,9 @@
       cursor: pointer;
       transition: all 0.2s ease;
       font-size: $font-size-sm;
+      position: relative;
+      z-index: 10000; // Ensure buttons are above overlay
+      pointer-events: auto; // Ensure buttons are clickable
 
       &:hover {
         background: rgba(102, 126, 234, 0.05);
@@ -618,8 +845,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 55;
+  z-index: 65; // Lower than dropdown menu (9999)
   background: transparent;
+  pointer-events: auto; // Allow clicks to close menu
 }
 
 // Hide desktop elements on mobile and small tablets
@@ -644,11 +872,5 @@
   }
 }
 
-// Make sure mobile header shows only on mobile
-@media (min-width: 769px) {
-  .mobile-header,
-  .mobile-dropdown-menu,
-  .mobile-dropdown-overlay {
-    display: none !important;
-  }
-}
+// Mobile dropdown menu should work on all screen sizes now
+// Remove the desktop-only hiding rules
