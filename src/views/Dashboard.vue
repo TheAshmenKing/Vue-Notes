@@ -3,7 +3,7 @@
     <!-- Mobile Header (visible only on mobile) -->
     <div class="mobile-header">
       <div class="logo">Your Notes</div>
-      <div class="mobile-menu-container">
+      <div class="mobile-menu-container" @click.stop>
         <button 
           @click="toggleMobileMenu" 
           class="hamburger-button"
@@ -16,6 +16,7 @@
         <div 
           class="mobile-dropdown-menu" 
           :class="{ show: showMobileMenu }"
+          @click.stop
         >
           <div class="dropdown-content">
             <router-link to="/dashboard" class="dropdown-item" @click="closeMobileMenu">
@@ -201,7 +202,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useNotes } from '../composables/useNotes.js'
 import { useAuth } from '../composables/useAuth.js'
@@ -399,6 +400,27 @@ const toggleMobileMenu = () => {
 const closeMobileMenu = () => {
   showMobileMenu.value = false
 }
+
+// Click outside to close mobile menu
+const handleClickOutside = (event) => {
+  // Only close if menu is open
+  if (!showMobileMenu.value) return
+  
+  // Check if the click is outside the mobile menu container
+  const mobileMenuContainer = event.target.closest('.mobile-menu-container')
+  if (!mobileMenuContainer) {
+    closeMobileMenu()
+  }
+}
+
+// Set up click outside listener
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 
 const handleMobileLogout = async (event) => {
   console.log('Mobile logout clicked', event)
